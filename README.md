@@ -20,6 +20,7 @@ This repository supports the "Millisecond AI" session from the Global Data & AI 
   - [Configure Ollama (Edge LLM)](#configure-ollama-edge-llm)
   - [Quickstart (90 Seconds)](#quickstart-90-seconds)
   - [Common Modes](#common-modes)
+  - [Decision Pipeline & Execution Order](#decision-pipeline--execution-order)
   - [Auto-Restart (Safe by Default)](#auto-restart-safe-by-default)
   - [End-to-End Demo: Auto-Restart a Service](#end-to-end-demo-auto-restart-a-service)
   - [Run as a Systemd Service](#run-as-a-systemd-service)
@@ -236,6 +237,79 @@ An incident JSON is written to `/var/log/oai_incidents/incident_<timestamp>.json
   ```bash
   python3 -m oai_guard.cli --json-file ./events.json --last --fast
   ```
+
+---
+
+## Decision Pipeline & Execution Order
+
+**Goal:** turn a log line into a structured incident (and optionally auto-remediate) with the fastest safe path.
+
+### Inputs
+- **Log input:** last error (`--last`), full scan (`--once`), live tail (default), or JSON events (`--json-file`).
+- **Context:** last `CONTEXT_LINES` lines (env) around the error.
+- **Config knobs:** `--fast/--no-fast/--fast-only`, `--llm-verify/--llm-augment`, `--no-history`, `--auto`, `--no-diagnostics`, plus env (e.g., `FAST_FIRST`, `KEEP_ALIVE`, `AUTO_POLICY`, etc.).
+
+### Execution Order
+
+1) **History Cache (instant reuse)**
+   - **When:** enabled by default; disable with `--no-history`.
+   - **How:** build a normalized *signature* of the error line (strip timestamps/IPs/IDs).
+   - **Outcome:** if signature is in SQLite cache, **reuse** the stored triage JSON and continue to step 6.
+   - **Source tag:** `source = "history"`.
+
+2) **Heuristic Fast-Path (regex recipes)**
+   - **When:** on if `--fast` (or `FAST_FIRST=1`); off with `--no-fast`.
+   - **How:** match error line against `_HEUR` (and any dynamic rules). If matched, emit a complete triage dict *without calling the model*.
+   - **Outcome:** triage is ready; proceed to step 3 (and possibly step 4 if you requested LLM verify/augment).
+   - **Source tag:** `source = "heuristic"`.
+
+3) **LLM Fallback (or Always, if `--no-fast`)**
+   - **When:** 
+     - Run if **no** history & **no** heuristic **and** not `--fast-only`, **or**
+     - After a heuristic match **if** you asked for `--llm-verify` or `--llm-augment`.
+   - **How:** send prompt with (a) raw context text and (b) **structured JSON** context; parse **strict JSON** reply.
+   - **Outcome:**
+     - **Fallback:** fills triage from model. `source = "llm"`.
+     - **Verify:** replace heuristic output with LLM output. `source = "llm"`.
+     - **Augment:** merge LLM details into heuristic output. `source = "heuristic+llm"`.
+   - **Note:** `--fast-only` prevents any LLM call.
+
+4) **Cache Save (for future instant hits)**
+   - **When:** if you produced new triage (heuristic or LLM) and history is enabled.
+   - **Outcome:** store triage by signature in SQLite.
+
+5) **Diagnostics (optional)**
+   - **When:** unless `--no-diagnostics` or `SKIP_DIAG=1`.
+   - **How:** run `diagnostics_cmds` (filtered by `ALLOWLIST`).
+   - **Outcome:** capture command results in the incident file.
+
+6) **Auto-Remediation (guardrailed)**
+   - **When:** only if `--auto` and triage indicates **`risk_level: "low"`** AND **`need_human_review: false`**.
+   - **Policy:**
+     - Command must pass `ALLOWLIST` (e.g., `systemctl restart`).
+     - Then pass `AUTO_POLICY`:
+       - `oai_only` (default): service name must start with `oai-`
+       - `whitelist`: service must appear in `WHITELIST_FILE`
+       - `any`: allow any service (⚠️ risky)
+   - **Verification:** after `systemctl restart <svc>`, poll `systemctl is-active <svc>` until `active` or timeout (`AUTO_VERIFY_TIMEOUT`, `AUTO_VERIFY_INTERVAL`).
+   - **Outcome:** results appended to incident; `auto_ran = true` if at least one fix executed.
+
+7) **Incident Persistence**
+   - **Path:** `/var/log/oai_incidents/incident_<timestamp>.json`
+   - **Contents:** 
+     - `source` (`history` | `heuristic` | `llm` | `heuristic+llm` | `none`)
+     - `summary`, `causes`, `diagnostics_cmds`, `fix_cmds`, `risk_level`, `need_human_review`
+     - `results` (diagnostic/fix outputs), `auto_ran`
+     - *(optional)* `structured_context`, `prompt_preview` if `--prove-json`
+
+
+### Flag Cheat-Sheet
+
+- **Speed:** `--fast --fast-only` (instant if heuristic/history matches), `KEEP_ALIVE=-1`, small `CONTEXT_LINES`.
+- **Model behavior:** `--no-fast` (always LLM), `--llm-verify` / `--llm-augment` (after heuristic).
+- **History:** `--no-history` disables reuse; otherwise enables instant repeats.
+- **Auto-fix:** `--auto` + `AUTO_POLICY` (`oai_only` | `whitelist` | `any`) + `ALLOWLIST`.
+- **Proof:** `--prove-json` embeds the structured JSON input and prompt preview in incidents.
 
 ---
 
