@@ -26,9 +26,8 @@ This repository supports the "Millisecond AI" session from the Global Data & AI 
   - [Auto-Remediation](#auto-remediation)
 - [Repository Layout](#repository-layout)
 - [Allow-List & Demo Service](#allow-list--demo-service)
-- [Demo Runbook (Copy/Paste)](#demo-runbook-copypaste)
+- [Demo Runbook](#demo-runbook)
 - [Troubleshooting](#troubleshooting)
-- [License](#license)
 
 ---
 
@@ -449,7 +448,7 @@ sudo systemctl enable --now demo-svc
 
 ---
 
-## Demo Runbook (Copy/Paste)
+## Demo Runbook
 
 **1) Snapshot environment**
 ```bash
