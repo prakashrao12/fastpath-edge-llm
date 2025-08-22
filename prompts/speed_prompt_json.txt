@@ -1,0 +1,7 @@
+Return ONLY a JSON object with keys exactly:
+- summary (<=20 words)
+- steps (array of <=5 short shell commands; read-only where possible)
+- risk ("low"|"medium"|"high")
+
+ERROR:
+{error_line}
