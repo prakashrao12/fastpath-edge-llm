@@ -48,6 +48,8 @@ By the end, you'll have a practical blueprint for bringing real-time intelligenc
 
 ## System Architecture
 
+<img width="475" height="406" alt="image" src="https://github.com/user-attachments/assets/bde64644-b9ae-4202-b8ce-19fdc99ce752" />
+
 ```
 5G UE → gNB → 5G Core (OAI/Open5GS) → /var/log/openair.log
                                             │
