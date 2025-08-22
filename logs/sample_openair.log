@@ -1,0 +1,76 @@
+2025-08-08 09:12:00.012 [AMF] INFO     Starting OAI AMF v1.5.0 (build=abcdef1, git=main)
+2025-08-08 09:12:00.019 [AMF] INFO     Reading config from /etc/oai/amf.conf
+2025-08-08 09:12:00.025 [AMF] INFO     NRF discovery endpoint: http://nrf:8080/nnrf-disc/v1
+2025-08-08 09:12:01.137 [AMF] ERROR    NRF registration failed: HTTP 503 Service Unavailable (retry in 5s)
+2025-08-08 09:12:06.141 [AMF] INFO     NRF registration successful; nfId=9b7e82d8-1c0f-4ec2-9a0c-1d2e6fa01234, status=REGISTERED
+2025-08-08 09:12:06.542 [AMF] INFO     Listening on N2 (SCTP) 0.0.0.0:38412
+2025-08-08 09:12:06.543 [AMF] INFO     Listening on N11 (HTTP) 0.0.0.0:8080
+2025-08-08 09:12:07.007 [NGAP] INFO    New SCTP association from gNB 10.0.0.12:52534
+2025-08-08 09:12:07.115 [NGAP] INFO    NGSetupRequest received; PLMN=00101, TAC=0001, gNBName=oai-gnb-1
+2025-08-08 09:12:07.217 [NGAP] INFO    NGSetupResponse sent; Served PLMNs=00101
+2025-08-08 09:12:08.003 [RRC] INFO     Cell=1 SSB configured; subcarrierSpacing=30kHz, pci=42
+2025-08-08 09:12:08.145 [RRC] INFO     Paging cycle=128, prachConfigIdx=16
+2025-08-08 09:12:10.001 [NAS] INFO     RegistrationRequest: SUPI=imsi-001010000000001, 5GS registration type=initial
+2025-08-08 09:12:10.104 [NAS] INFO     AuthenticationRequest sent (T3560 started)
+2025-08-08 09:12:12.205 [NAS] ERROR    T3560 expired waiting for AuthenticationResponse from UE (supi=imsi-001010000000001)
+2025-08-08 09:12:12.206 [NAS] INFO     Deregistering UE context supi=imsi-001010000000001
+2025-08-08 09:12:13.001 [NAS] INFO     RegistrationRequest: SUPI=imsi-001010000000002, 5GS registration type=initial
+2025-08-08 09:12:13.122 [NAS] INFO     Authentication success (AKA)
+2025-08-08 09:12:13.245 [NAS] INFO     SecurityModeCommand complete (IA=128-5G-IA1, EA=128-5G-EA1)
+2025-08-08 09:12:13.398 [NAS] INFO     RegistrationAccept sent (TAI=00101-0001)
+2025-08-08 09:12:15.000 [SMF] INFO     N11 CreateSMContext: SUPI=imsi-001010000000002, DNN=internet, S-NSSAI=1-010203
+2025-08-08 09:12:15.121 [SMF] INFO     Selecting UPF candidate 10.0.0.20:8805 (weight=10)
+2025-08-08 09:12:15.456 [PFCP] ERROR    Association Setup timed out after 5s (dst=10.0.0.20:8805) - no response
+2025-08-08 09:12:15.457 [SMF] WARN     UPF association not ready; retry in 3s
+2025-08-08 09:12:18.462 [PFCP] INFO     Association Setup success (UPF=10.0.0.20:8805, recoveryTime=2025-08-08T09:10:55Z)
+2025-08-08 09:12:18.763 [SMF] INFO     PDU Session Establishment triggered (pduSessionId=5)
+2025-08-08 09:12:19.014 [PFCP] INFO     Session Establishment Request TEID=0x01000001 N3=10.0.0.30:2152
+2025-08-08 09:12:19.215 [UPF] ERROR    Failed to bind GTP-U on 0.0.0.0:2152: Address already in use
+2025-08-08 09:12:19.216 [PFCP] CRITICAL  Session Establishment failed (cause=NO_RESOURCES) for pduSessionId=5
+2025-08-08 09:12:19.217 [SMF] ERROR    PDU Session Establishment failed for supi=imsi-001010000000002 (cause=upf-no-gtpu)
+2025-08-08 09:12:19.500 [SMF] INFO     Retrying with backup UPF 10.0.0.21:8805
+2025-08-08 09:12:19.801 [PFCP] INFO     Association Setup success (UPF=10.0.0.21:8805)
+2025-08-08 09:12:20.103 [PFCP] INFO     Session Establishment success (pdrs=4, fars=4, teid=0x02000001)
+2025-08-08 09:12:20.304 [SMF] INFO     N2 SM Information sent to AMF (QoS=standard)
+2025-08-08 09:12:21.001 [NGAP] INFO    InitialContextSetupRequest: pduSessionId=5 DRB=1 QoSFlow=9
+2025-08-08 09:12:21.208 [NGAP] INFO    InitialContextSetupResponse from gNB; DRB established
+2025-08-08 09:12:22.002 [RRC] INFO     RRCConnectionSetup for UE-RNTI=0x46
+2025-08-08 09:12:22.207 [RRC] ERROR    No SIB1 scheduled for cell=1; UE measurements may fail; check MIB/SIB config
+2025-08-08 09:12:23.118 [NGAP] INFO    PDU Session Resource Setup Response: OK
+2025-08-08 09:12:24.500 [UPF] INFO     GTP-U packet counters: UL=120 pkts DL=135 pkts (interval=5s)
+2025-08-08 09:12:25.006 [NAS] INFO     UE requested additional PDU Session (DNN=private)
+2025-08-08 09:12:25.109 [SMF] ERROR    DNN 'private' not configured - rejecting session (cause=missing-dnn)
+2025-08-08 09:12:25.110 [NAS] INFO     PDU Session Establishment Reject (cause=missing-dnn)
+2025-08-08 09:12:27.004 [AMF] INFO     UE context active; SUPI=imsi-001010000000002, RRC=Connected
+2025-08-08 09:12:30.000 [NRF] INFO     Heartbeat: nfType=AMF, nfStatus=REGISTERED
+2025-08-08 09:12:35.000 [SMF] INFO     Heartbeat: sessions=1 upf=10.0.0.21
+2025-08-08 09:12:40.325 [UPF] INFO     PFCP Session Report: DLDR=0x02000001 downlink packets=234
+2025-08-08 09:12:45.001 [NGAP] INFO    UEContextReleaseCommand (user inactivity); cause=idle
+2025-08-08 09:12:45.203 [NGAP] INFO    UEContextReleaseComplete; resources freed
+2025-08-08 09:13:00.007 [AMF] INFO     New SCTP association from gNB 10.0.0.13:52538
+2025-08-08 09:13:00.108 [NGAP] INFO    NGSetupRequest received; PLMN=00101, TAC=0002, gNBName=oai-gnb-2
+2025-08-08 09:13:00.210 [NGAP] INFO    NGSetupResponse sent; Served PLMNs=00101
+2025-08-08 09:13:02.001 [NAS] INFO     RegistrationRequest: SUPI=imsi-001010000000003, 5GS registration type=initial
+2025-08-08 09:13:02.205 [NAS] INFO     Authentication success (5G-AKA)
+2025-08-08 09:13:02.406 [NAS] INFO     SecurityModeComplete
+2025-08-08 09:13:02.607 [NAS] INFO     RegistrationAccept sent
+2025-08-08 09:13:03.007 [SMF] INFO     N11 CreateSMContext: SUPI=imsi-001010000000003, DNN=internet
+2025-08-08 09:13:03.210 [PFCP] INFO     Session Establishment success (teid=0x03000001)
+2025-08-08 09:13:03.411 [NGAP] INFO    PDU Session Resource Setup Response: OK
+2025-08-08 09:13:04.001 [UPF] INFO     GTP-U connected to gNB N3=10.0.0.31:2152
+2025-08-08 09:13:05.333 [UPF] INFO     UL throughput=12.3Mbps DL throughput=13.8Mbps (1s avg)
+2025-08-08 09:13:10.100 [AMF] INFO     Periodic stats: UEs=2 RRC-Connected=1 Sessions=2
+2025-08-08 09:13:15.555 [SMF] INFO     Service data flow added (uplink classifier matched)
+2025-08-08 09:13:20.777 [UPF] INFO     PFCP Session Report: DLDR=0x03000001 downlink packets=512
+2025-08-08 09:13:25.000 [AMF] INFO     NRF heartbeat OK
+2025-08-08 09:13:30.222 [NGAP] INFO    UEContextReleaseCommand (normal release)
+2025-08-08 09:13:30.423 [NGAP] INFO    UEContextReleaseComplete
+2025-08-08 09:13:35.000 [SMF] INFO     Heartbeat: sessions=1 upf=10.0.0.21
+2025-08-08 09:13:40.000 [UPF] INFO     GTP-U packet counters: UL=332 pkts DL=401 pkts (interval=5s)
+2025-08-08 09:13:45.000 [AMF] INFO     Timer sweep: stale UEs=0
+2025-08-08 09:13:50.001 [NGAP] INFO    Paging UE supi=imsi-001010000000003
+2025-08-08 09:13:52.104 [NAS] INFO     ServiceRequest from supi=imsi-001010000000003; resuming RRC connection
+2025-08-08 09:13:52.506 [SMF] INFO     PDU Session Modification (QoS change) complete
+2025-08-08 09:13:55.009 [UPF] INFO     UL throughput=16.2Mbps DL throughput=17.5Mbps (1s avg)
+2025-08-08 09:14:00.000 [AMF] INFO     Periodic stats: UEs=2 RRC-Connected=1 Sessions=2
+2025-08-20 13:28:55.943 [DEMO] ERROR    demo service 'demo-svc' is inactive (dead)
