@@ -407,9 +407,8 @@ sudo systemctl enable --now oai-guard
 ├── systemd/
 │   └── demo-svc.service       # harmless demo service for restart demo
 ├── logs/
-│   └── sample_openair.log     # sample ERROR lines (for offline testing)
-└── docs/
-    └── demo.md                # optional: copy of runbook
+    └── sample_openair.log     # sample ERROR lines (for offline testing)
+
 ```
 
 ---
@@ -527,8 +526,3 @@ systemctl status demo-svc
   - Ollama uses `format:"json"`; OpenAI uses `response_format` then fallback
   - Raw model text is logged alongside incident JSON
 
----
-
-## License
-
-MIT (or your choice). Add a `LICENSE` file at repo root.
